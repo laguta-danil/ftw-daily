@@ -30,6 +30,10 @@ const priceData = (price, intl) => {
   return {};
 };
 
+const OpenDiscountCoupon = () => {
+
+}
+
 const openBookModal = (isOwnListing, isClosed, history, location) => {
   if (isOwnListing || isClosed) {
     window.scrollTo(0, 0);
@@ -66,6 +70,7 @@ const BookingPanel = props => {
     location,
     intl,
     onFetchTransactionLineItems,
+    onFetchDiscount,
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
@@ -159,8 +164,17 @@ const BookingPanel = props => {
             <FormattedMessage id="BookingPanel.closedListingButtonText" />
           </div>
         ) : null}
+
       </div>
+      <Button
+        // rootClassName={css.bookButton}
+        onClick={onFetchDiscount}
+      >
+         Enter a discount coupon
+        {/*<FormattedMessage id="BookingPanel.ctaButtonMessage" />*/}
+      </Button>
     </div>
+
   );
 };
 
@@ -192,9 +206,11 @@ BookingPanel.propTypes = {
   timeSlots: arrayOf(propTypes.timeSlot),
   fetchTimeSlotsError: propTypes.error,
   onFetchTransactionLineItems: func.isRequired,
+  onFetchDiscount: func.isRequired,
   lineItems: array,
   fetchLineItemsInProgress: bool.isRequired,
   fetchLineItemsError: propTypes.error,
+
 
   // from withRouter
   history: shape({

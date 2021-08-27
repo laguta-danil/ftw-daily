@@ -41,7 +41,7 @@ import {
 } from '../../components';
 import { TopbarContainer, NotFoundPage } from '../../containers';
 
-import { sendEnquiry, fetchTransactionLineItems, setInitialValues } from './ListingPage.duck';
+import { sendEnquiry, fetchTransactionLineItems, setInitialValues, fetchDiscount } from './ListingPage.duck';
 import SectionImages from './SectionImages';
 import SectionAvatar from './SectionAvatar';
 import SectionHeading from './SectionHeading';
@@ -193,6 +193,7 @@ export class ListingPageComponent extends Component {
       fetchTimeSlotsError,
       filterConfig,
       onFetchTransactionLineItems,
+      onFetchDiscount,
       lineItems,
       fetchLineItemsInProgress,
       fetchLineItemsError,
@@ -386,6 +387,7 @@ export class ListingPageComponent extends Component {
         </span>
       ) : null;
 
+
     return (
       <Page
         title={schemaTitle}
@@ -470,6 +472,7 @@ export class ListingPageComponent extends Component {
                   timeSlots={timeSlots}
                   fetchTimeSlotsError={fetchTimeSlotsError}
                   onFetchTransactionLineItems={onFetchTransactionLineItems}
+                  onFetchDiscount={onFetchDiscount}
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
@@ -485,7 +488,6 @@ export class ListingPageComponent extends Component {
     );
   }
 }
-
 ListingPageComponent.defaultProps = {
   unitType: config.bookingUnitType,
   currentUser: null,
@@ -602,6 +604,7 @@ const mapDispatchToProps = dispatch => ({
     dispatch(fetchTransactionLineItems(bookingData, listingId, isOwnListing)),
   onSendEnquiry: (listingId, message) => dispatch(sendEnquiry(listingId, message)),
   onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
+  onFetchDiscount: () => dispatch(fetchDiscount()),
 });
 
 // Note: it is important that the withRouter HOC is **outside** the
@@ -618,5 +621,13 @@ const ListingPage = compose(
   ),
   injectIntl
 )(ListingPageComponent);
+
+let discount = () => {
+  // class API{
+  //   location = ' https://api.voucherify.io/v1/validation-rules'
+  // }
+}
+console.log(discount(location))
+
 
 export default ListingPage;

@@ -56,6 +56,9 @@ const getPageDataLoadingAPI = () => {
       loadData: TransactionPageLoader,
       setInitialValues: TransactionPageInitialValues,
     },
+    DiscountPage: {
+
+    }
   };
 };
 

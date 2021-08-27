@@ -4,7 +4,7 @@ import config from '../../config';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { storableError } from '../../util/errors';
 import { addMarketplaceEntities } from '../../ducks/marketplaceData.duck';
-import { transactionLineItems } from '../../util/api';
+import { transactionLineItems, getDiscount } from '../../util/api';
 import * as log from '../../util/log';
 import { denormalisedResponseEntities } from '../../util/data';
 import { TRANSITION_ENQUIRE } from '../../util/transaction';
@@ -39,6 +39,10 @@ export const SEND_ENQUIRY_REQUEST = 'app/ListingPage/SEND_ENQUIRY_REQUEST';
 export const SEND_ENQUIRY_SUCCESS = 'app/ListingPage/SEND_ENQUIRY_SUCCESS';
 export const SEND_ENQUIRY_ERROR = 'app/ListingPage/SEND_ENQUIRY_ERROR';
 
+export const FETCH_DISCOUNT_REQUEST = 'app/ListingPage/FETCH_DISCOUNT_REQUEST';
+export const FETCH_DISCOUNT_SUCCESS = 'app/ListingPage/FETCH_DISCOUNT_SUCCESS';
+export const FETCH_DISCOUNT_ERROR = 'app/ListingPage/FETCH_DISCOUNT_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -54,6 +58,7 @@ const initialState = {
   sendEnquiryInProgress: false,
   sendEnquiryError: null,
   enquiryModalOpenForListingId: null,
+  discount: null,
 };
 
 const listingPageReducer = (state = initialState, action = {}) => {
@@ -94,6 +99,13 @@ const listingPageReducer = (state = initialState, action = {}) => {
       return { ...state, sendEnquiryInProgress: false };
     case SEND_ENQUIRY_ERROR:
       return { ...state, sendEnquiryInProgress: false, sendEnquiryError: payload };
+
+    case FETCH_DISCOUNT_REQUEST:
+      return{...state, }
+    case FETCH_DISCOUNT_SUCCESS:
+      return{...state, }
+    case FETCH_DISCOUNT_ERROR:
+      return{...state, }
 
     default:
       return state;
@@ -150,9 +162,15 @@ export const fetchLineItemsError = error => ({
   payload: error,
 });
 
+
 export const sendEnquiryRequest = () => ({ type: SEND_ENQUIRY_REQUEST });
 export const sendEnquirySuccess = () => ({ type: SEND_ENQUIRY_SUCCESS });
 export const sendEnquiryError = e => ({ type: SEND_ENQUIRY_ERROR, error: true, payload: e });
+
+export const fetchDiscountRequest = () => ({
+  type: FETCH_DISCOUNT_REQUEST,
+});
+
 
 // ================ Thunks ================ //
 
@@ -329,4 +347,19 @@ export const loadData = (params, search) => dispatch => {
   } else {
     return Promise.all([dispatch(showListing(listingId)), dispatch(fetchReviews(listingId))]);
   }
+};
+
+
+
+
+export const fetchDiscount = () => dispatch => {
+  dispatch(fetchDiscountRequest());
+  const data = getDiscount() .then(response => {
+    debugger;
+  })
+    .catch(e => {
+      debugger;
+      });
+
+
 };

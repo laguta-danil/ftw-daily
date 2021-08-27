@@ -71,6 +71,48 @@ const post = (path, body) => {
   });
 };
 
+
+// getter
+
+// export const voucherifyClient = require('voucherify')
+//
+// const client = voucherifyClient({
+//   applicationId: 'log_09c3b7eb3f1cdaae5b',
+//   clientSecretKey: 'b56f35b1-dec3-43e0-97fc-cc6838d59589'
+// })
+//
+// client.redemptions.redeem("voucherify.io-20-usd-off").then(console.log)
+
+
+
+const get = (path) => {
+  const url = `${path}`;
+  const options = {
+    method: 'GET',
+    applicationId: 'log_09c3b7eb3f1cdaae5b',
+    clientSecretKey: 'b56f35b1-dec3-43e0-97fc-cc6838d59589'
+  };
+  return window.fetch(url, options).then(res => {
+    const contentTypeHeader = res.headers.get('Content-Type');
+    const contentType = contentTypeHeader ? contentTypeHeader.split(';')[0] : null;
+
+    if (res.status >= 400) {
+      return res.json().then(data => {
+        let e = new Error();
+        e = Object.assign(e, data);
+
+        throw e;
+      });
+    }
+    if (contentType === 'application/transit+json') {
+      return res.text().then(deserialize);
+    } else if (contentType === 'application/json') {
+      return res.json();
+    }
+    return res.text();
+  });
+};
+
 // Fetch transaction line items from the local API endpoint.
 //
 // See `server/api/transaction-line-items.js` to see what data should
@@ -79,6 +121,10 @@ export const transactionLineItems = body => {
   return post('/api/transaction-line-items', body);
 };
 
+export const getDiscount = () => {
+  return get('https://app.voucherify.io/v1/vouchers/v_WaikaVmIyv5c4idPSYbtq2kwrGZ0XhCS')
+}
+//https://api.voucherify.io/v1/vouchers/code/redemption
 // Initiate a privileged transaction.
 //
 // With privileged transitions, the transactions need to be created
